@@ -48,6 +48,7 @@ export class Config {
     siteMap: Map<string, Site>;
     _workspaceFolder: string = workspace.rootPath ? workspace.rootPath : "";
     _workspaceFolderBasename: string = workspace.rootPath ? path.basename(workspace.rootPath) : "";
+    sitesUsesRegex: boolean;
 
     constructor(config: WorkspaceConfiguration) {
         this.onFileSave = config.get('onSave', false);
@@ -61,6 +62,7 @@ export class Config {
         this.cygpath = config.get('cygpath', undefined);
         this.watchGlobs = config.get('watchGlobs', []);
         this.useWSL = config.get('useWSL', false);
+        this.sitesUsesRegex = config.get('sitesUsesRegex', false);
         
         let site_default = new Site(
             config.get('name', null),

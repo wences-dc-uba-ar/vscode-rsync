@@ -265,7 +265,28 @@ const syncFile = async function (config: Config, file: string, down: boolean): P
 
         file = config.translatePath(file);
 
-        if (file.startsWith(path)) {
+        let mustSync = file.startsWith(path);
+
+        if(config.sitesUsesRegex) {
+
+            let matches = file.match(new RegExp('^' + path));
+
+            if(matches) {
+                mustSync = true
+                path = matches[0]
+
+                matches.forEach((value, index) => {
+                    site.remotePath = site.remotePath.replace(`{${index}}`, value)
+                })
+                if (matches.groups) {
+                    for (let [name, value] of Object.entries(matches.groups)) {
+                        site.remotePath = site.remotePath.replace(`{${name}}`, value)
+                    }
+                }
+            }
+        }
+
+        if (mustSync) {
 
             sync_file = true;
 

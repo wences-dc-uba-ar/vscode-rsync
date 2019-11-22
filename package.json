@@ -215,6 +215,11 @@
           "default": false,
           "description": "Use WSL"
         },
+        "sync-rsync.sitesUsesRegex": {
+          "type": "boolean",
+          "default": false,
+          "description": "interpret localPath strings as regex. This allows capturing tokens and using them in remotePath, Example: localPath=/dir/(?<hostname>[^/]+)/(?<site>[^/]+)/ remotePath=john@{hostname}:/var/www/{site}/"
+        },
         "sync-rsync.sites": {
           "type": "array",
           "description": "Sites",

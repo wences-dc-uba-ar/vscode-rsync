@@ -45,6 +45,8 @@ Overall Settings (all optional):
 * `sync-rsync.watchGlobs`: Enables file system watcher on given glob patterns (may cause high CPU usage - use carefuly).
 * `sync-rsync.useWSL`: Use WSL for executing rsync. See [Windows Notes](#windows-notes)
 
+* `sync-rsync.sitesUsesRegex`: Interpret localPath as regex (see example below)
+
 Global site options (they will be used as the default for each site):
 
 * `sync-rsync.local`: the local location defaults to workspace.
@@ -132,6 +134,26 @@ Example :
         {
             "localPath":"project/static/",
             "remotePath":"user3server3:/static/", // Sync project/static/ to user3@server3:/static/
+        }
+    ]
+}
+```
+
+Example using `sync-rsync.sitesUsesRegex`:
+
+Interpret localPath strings as regex. This allows capturing tokens and using them in remotePath.
+
+```javascript
+{
+    "sync-rsync.sitesUsesRegex": true,
+    "sync-rsync.sites": [
+        {
+            "localPath": "/sites/(?<hostname>[^/]+)/(?<site>[^/]+)/",
+            "remotePath": "user@{hostname}:/var/www/{site}/public/",
+            // will
+            // sync /sites/aHost/mydomain/ to user@aHost:/var/www/mydomain/public/
+            // sync /sites/aHost/otherDomain/ to user@aHost:/var/www/otherDomain/public/
+            // sync /sites/otherHost/otherDir/ to user@otherHost:/var/www/otherDir/public/
         }
     ]
 }

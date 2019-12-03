@@ -5,8 +5,8 @@ import {
 import * as path from 'path';
 import * as child from 'child_process';
 
-export class Site { 
-    
+export class Site {
+
     constructor(
         public name: string,
         public upOnly: boolean,
@@ -63,7 +63,7 @@ export class Config {
         this.watchGlobs = config.get('watchGlobs', []);
         this.useWSL = config.get('useWSL', false);
         this.sitesUsesRegex = config.get('sitesUsesRegex', false);
-        
+
         let site_default = new Site(
             config.get('name', null),
             false,
@@ -108,7 +108,7 @@ export class Config {
             }
             if(workspaceLocal != null) {
                 site.localPath = this.expandVars(site.localPath)
-                
+
                 for(let i = 0; i < site.options.length; i ++) {
                     const site_option = site.options[i];
                     for(let j = 0; j < site_option.length; j++ ) {
@@ -119,16 +119,16 @@ export class Config {
                 if(site.remotePath != null) {
                     site.remotePath = this.expandVars(site.remotePath);
                 }
-            } 
+            }
 
             site.localPath = this.translatePath(site.localPath);
             site.remotePath = this.translatePath(site.remotePath);
-            
+
             if(undefined != site.localPath && site.localPath[site.localPath.length - 1] != '/') site.localPath += '/';
             if(undefined != site.remotePath && site.remotePath[site.remotePath.length - 1] != '/') site.remotePath += '/';
         }
 
-        var siteMap = new Map<string, Site>(); 
+        var siteMap = new Map<string, Site>();
 
         for(let s of sites) {
             var s_key = s.name ? s.name : s.remotePath;
@@ -148,9 +148,9 @@ export class Config {
     }
 
     translatePath(path: string): string {
-        
+
         if(path == null) return null;
-        
+
         if(path[0] == '/') return path;
 
         if(this.cygpath) {

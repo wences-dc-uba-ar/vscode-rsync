@@ -53,7 +53,7 @@ const execute = function (config: Config, cmd: string, args: string[] = [], shel
 
         if (process.platform === 'win32' && shell) {
 
-            // when the platform is win32, spawn would add /s /c flags, making it impossible for the 
+            // when the platform is win32, spawn would add /s /c flags, making it impossible for the
             // shell to be something other than cmd or powershell (e.g. bash)
             args = ["'", cmd].concat(args, "'");
             currentSync = child.spawn(shell + " -c", args, { stdio: 'pipe', shell: "cmd.exe" });
@@ -109,7 +109,7 @@ const syncSite = async function (site: Site, config: Config, { down, dry }: { do
     if(!down && site.downOnly) {
         outputChannel.appendLine(`\n${site.remotePath} is downOnly`);
         return true;
-    } 
+    }
 
     let paths = [];
 
@@ -178,18 +178,18 @@ const syncSite = async function (site: Site, config: Config, { down, dry }: { do
     if(down) {
         if(site.preSyncDown) rtn = await runPrePost(site, config, site.preSyncDown,"preSyncDown");
     } else {
-        if(site.preSyncUp) rtn = await runPrePost(site, config, site.preSyncUp,"preSyncUp"); 
+        if(site.preSyncUp) rtn = await runPrePost(site, config, site.preSyncUp,"preSyncUp");
     }
 
     rtn = await runSync(rsync, paths, site, config);
-    
+
     if (rtn == 0) {
         if(down) {
             if(site.postSyncDown) rtn = await runPrePost(site, config, site.postSyncDown,"postSyncDown");
         } else {
-            if(site.postSyncUp) rtn = await runPrePost(site, config, site.postSyncUp,"postSyncUp"); 
+            if(site.postSyncUp) rtn = await runPrePost(site, config, site.postSyncUp,"postSyncUp");
             if(site.afterSync) {
-                rtn = await runPrePost(site, config, site.afterSync,"afterSync"); 
+                rtn = await runPrePost(site, config, site.afterSync,"afterSync");
                 vscWindow.showInformationMessage("afterSync will be deprecated use postSyncUp");
             }
         }
@@ -411,16 +411,16 @@ const syncSingle = function(config: Config, down: boolean) {
 
         statusBar.color = 'mediumseagreen';
         statusBar.text = createStatusText('$(sync)');
-    
+
         let success = true;
         syncKilled = false;
         statusBar.command = 'sync-rsync.killSync';
-    
+
         success = await syncSite(site, config, { down, dry: false});
-        
+
         syncKilled = true;
         statusBar.command = 'sync-rsync.showOutput';
-    
+
         if (success) {
             if (config.autoHideOutput) {
                 outputChannel.hide();
@@ -480,7 +480,7 @@ export function activate(context: ExtensionContext): void {
     const syncDownContextCommand: Disposable = commands.registerCommand('sync-rsync.syncDownContext', (i :{path}): void => {
         lstat(i.path,(err,info) => {
             if(err) return;
-            
+
             var path = config.translatePath(i.path);
 
             if(info.isDirectory()) {
@@ -488,7 +488,7 @@ export function activate(context: ExtensionContext): void {
             }
             syncFile(config, path, true);
         })
-        
+
     });
     const syncDownSingleCommand: Disposable = commands.registerCommand('sync-rsync.syncDownSingle', (site: string): void => {
         syncSingle(config,true);
@@ -499,7 +499,7 @@ export function activate(context: ExtensionContext): void {
     const syncUpContextCommand: Disposable = commands.registerCommand('sync-rsync.syncUpContext', (i :{path}): void => {
         lstat(i.path,(err,info) => {
             if(err) return;
-            
+
             var path = config.translatePath(i.path);
 
             if(info.isDirectory()) {
@@ -507,7 +507,7 @@ export function activate(context: ExtensionContext): void {
             }
             syncFile(config, path, false);
         })
-        
+
     });
     const syncUpSingleCommand: Disposable = commands.registerCommand('sync-rsync.syncUpSingle', (site: string): void => {
         syncSingle(config,false);
